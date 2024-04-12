@@ -1,0 +1,268 @@
+object fmMain: TfmMain
+  Left = 342
+  Height = 343
+  Top = 157
+  Width = 775
+  AutoSize = True
+  Caption = 'AppSettings Test'
+  ChildSizing.LeftRightSpacing = 10
+  ChildSizing.TopBottomSpacing = 10
+  ChildSizing.HorizontalSpacing = 10
+  ChildSizing.VerticalSpacing = 10
+  ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+  ChildSizing.Layout = cclTopToBottomThenLeftToRight
+  ClientHeight = 343
+  ClientWidth = 775
+  Color = clWindow
+  DesignTimePPI = 120
+  OnCreate = FormCreate
+  OnShow = FormShow
+  LCLVersion = '3.0.0.3'
+  object Panel1: TPanel
+    Left = 10
+    Height = 226
+    Top = 10
+    Width = 560
+    AutoSize = True
+    BevelOuter = bvNone
+    BorderStyle = bsSingle
+    ChildSizing.LeftRightSpacing = 10
+    ChildSizing.TopBottomSpacing = 10
+    ChildSizing.HorizontalSpacing = 10
+    ChildSizing.VerticalSpacing = 10
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 4
+    ClientHeight = 222
+    ClientWidth = 556
+    ParentBackground = False
+    TabOrder = 0
+    object edEdit: TEdit
+      Left = 10
+      Height = 28
+      Top = 10
+      Width = 114
+      TabOrder = 0
+      Text = 'text'
+    end
+    object Label1: TLabel
+      Left = 134
+      Height = 28
+      Top = 10
+      Width = 87
+      Caption = 'String'
+      Layout = tlCenter
+    end
+    object cbCombobox: TComboBox
+      Left = 231
+      Height = 28
+      Top = 10
+      Width = 125
+      ItemHeight = 20
+      ItemIndex = 0
+      Items.Strings = (
+        'item1'
+        'item2'
+        'item3'
+      )
+      Style = csDropDownList
+      TabOrder = 2
+      Text = 'item1'
+    end
+    object Label3: TLabel
+      Left = 366
+      Height = 28
+      Top = 10
+      Width = 114
+      Caption = 'Integer index'
+      Layout = tlCenter
+    end
+    object seSpinEdit: TSpinEdit
+      Left = 10
+      Height = 28
+      Top = 48
+      Width = 114
+      TabOrder = 3
+      Value = 50
+    end
+    object Label4: TLabel
+      Left = 134
+      Height = 28
+      Top = 48
+      Width = 87
+      Caption = 'Integer value'
+      Layout = tlCenter
+    end
+    object fseFloatSE: TFloatSpinEdit
+      Left = 231
+      Height = 28
+      Top = 48
+      Width = 125
+      TabOrder = 4
+      Value = 33.33
+    end
+    object Label5: TLabel
+      Left = 366
+      Height = 28
+      Top = 48
+      Width = 114
+      Caption = 'Double'
+      Layout = tlCenter
+    end
+    object cbCheckbox: TCheckBox
+      Left = 10
+      Height = 31
+      Top = 86
+      Width = 114
+      Caption = 'CheckBox text'
+      Color = clDefault
+      ParentColor = False
+      TabOrder = 1
+    end
+    object Label2: TLabel
+      Left = 134
+      Height = 31
+      Top = 86
+      Width = 87
+      Caption = 'Boolean'
+      Layout = tlCenter
+    end
+    object tbTrackBar: TTrackBar
+      Left = 231
+      Height = 31
+      Top = 86
+      Width = 125
+      Position = 0
+      Color = 3487029
+      ParentColor = False
+      TabOrder = 7
+    end
+    object Label14: TLabel
+      Left = 366
+      Height = 31
+      Top = 86
+      Width = 114
+      Caption = 'Integer, position'
+      Layout = tlCenter
+    end
+    object rgRadioGroup: TRadioGroup
+      Left = 10
+      Height = 85
+      Top = 127
+      Width = 114
+      AutoFill = True
+      Caption = 'rgRadioGroup'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 2
+      ClientHeight = 60
+      ClientWidth = 110
+      Columns = 2
+      ItemIndex = 0
+      Items.Strings = (
+        '1'
+        '2'
+        '3'
+      )
+      ParentBackground = False
+      TabOrder = 5
+    end
+    object Label9: TLabel
+      Left = 134
+      Height = 85
+      Top = 127
+      Width = 87
+      Caption = 'Integer index'
+      Layout = tlCenter
+    end
+    object cgCheckGroup: TCheckGroup
+      Left = 231
+      Height = 85
+      Top = 127
+      Width = 125
+      AutoFill = True
+      Caption = 'cgCheckGroup'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.TopBottomSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 2
+      ClientHeight = 60
+      ClientWidth = 121
+      Columns = 2
+      Items.Strings = (
+        '1'
+        '2'
+        '3'
+        '4'
+      )
+      ParentBackground = False
+      TabOrder = 6
+      Data = {
+        0400000002020202
+      }
+    end
+    object Label10: TLabel
+      Left = 366
+      Height = 85
+      Top = 127
+      Width = 114
+      Caption = 'String with marks'
+      Layout = tlCenter
+    end
+  end
+  object Panel2: TPanel
+    Left = 580
+    Height = 226
+    Top = 10
+    Width = 185
+    AutoSize = True
+    BevelOuter = bvNone
+    BorderStyle = bsSingle
+    ChildSizing.LeftRightSpacing = 10
+    ChildSizing.TopBottomSpacing = 10
+    ChildSizing.HorizontalSpacing = 10
+    ChildSizing.VerticalSpacing = 10
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ClientHeight = 222
+    ClientWidth = 181
+    ParentBackground = False
+    TabOrder = 1
+    object btnSave: TButton
+      Left = 10
+      Height = 30
+      Top = 10
+      Width = 96
+      Caption = 'Save'
+      Constraints.MinWidth = 96
+      TabOrder = 0
+      OnClick = btnSaveClick
+    end
+    object btnRestore: TButton
+      Left = 10
+      Height = 30
+      Top = 50
+      Width = 96
+      Caption = 'Restore'
+      Constraints.MinWidth = 96
+      TabOrder = 1
+      OnClick = btnRestoreClick
+    end
+    object cbSync: TCheckBox
+      Left = 10
+      Height = 24
+      Top = 90
+      Width = 96
+      Caption = 'Sync'
+      Checked = True
+      State = cbChecked
+      TabOrder = 2
+    end
+  end
+end

@@ -1,0 +1,10 @@
+{"version":1,"strings":[
+{"hash":161860244,"name":"tform1.caption","sourcebytes":[65,112,112,76,111,99,97,108,105,122,101,114,32,84,101,115,116],"value":"AppLocalizer Test"},
+{"hash":139375349,"name":"tform1.tstab1.caption","sourcebytes":[76,97,110,103,117,97,103,101],"value":"Language"},
+{"hash":139375349,"name":"tform1.label1.caption","sourcebytes":[76,97,110,103,117,97,103,101],"value":"Language"},
+{"hash":15941512,"name":"tform1.label2.caption","sourcebytes":[84,101,115,116,32,99,111,109,98,111,98,111,120],"value":"Test combobox"},
+{"hash":145100568,"name":"tform1.label3.caption","sourcebytes":[84,101,115,116,32,108,105,115,116,98,111,120],"value":"Test listbox"},
+{"hash":250892168,"name":"tform1.label4.caption","sourcebytes":[65,117,116,111,32,99,111,109,98,111,98,111,120],"value":"Auto combobox"},
+{"hash":71142637,"name":"tform1.btnsecond.caption","sourcebytes":[83,101,99,111,110,100,32,70,111,114,109],"value":"Second Form"},
+{"hash":5680834,"name":"tform1.tstab2.caption","sourcebytes":[79,116,104,101,114],"value":"Other"}
+]}

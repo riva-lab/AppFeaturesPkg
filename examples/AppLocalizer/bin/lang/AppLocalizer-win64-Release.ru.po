@@ -1,0 +1,87 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4\n"
+
+#: i18n.cb1_test_1
+msgid "item 1"
+msgstr "пункт 1"
+
+#: i18n.cb1_test_2
+msgid "item 2"
+msgstr "пункт 2"
+
+#: i18n.cb1_test_3
+msgid "item 3"
+msgstr "пункт 3"
+
+#: i18n.cb1_test_4
+msgid "item 4"
+msgstr "пункт 4"
+
+#: i18n.lb1_test_1
+msgid "line 1"
+msgstr "строка 1"
+
+#: i18n.lb1_test_2
+msgid "line 2"
+msgstr "строка 2"
+
+#: i18n.lb1_test_3
+msgid "line 3"
+msgstr "строка 3"
+
+#: i18n.lb1_test_4
+msgid "line 4"
+msgstr "строка 4"
+
+#: tfmsecond.caption
+msgid "fmSecond"
+msgstr "Форма 2"
+
+#: tfmsecond.lbsecond.caption
+msgid "lbSecond"
+msgstr "Метка формы 2"
+
+#: tform1.btnsecond.caption
+msgid "Second Form"
+msgstr "Другая форма"
+
+#: tform1.caption
+msgid "AppLocalizer Test"
+msgstr "AppLocalizer Тест"
+
+#: tform1.label1.caption
+msgctxt "tform1.label1.caption"
+msgid "Language"
+msgstr "Язык"
+
+#: tform1.label2.caption
+msgid "Test combobox"
+msgstr "Тестовый combobox"
+
+#: tform1.label3.caption
+msgid "Test listbox"
+msgstr "Тестовый listbox"
+
+#: tform1.label4.caption
+msgid "Auto combobox"
+msgstr "Автозаполняемый combobox"
+
+#: tform1.tstab1.caption
+msgctxt "tform1.tstab1.caption"
+msgid "Language"
+msgstr "Язык"
+
+#: tform1.tstab2.caption
+msgid "Other"
+msgstr "Другое"
+

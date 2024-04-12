@@ -1,0 +1,77 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: i18n.cb1_test_1
+msgid "item 1"
+msgstr ""
+
+#: i18n.cb1_test_2
+msgid "item 2"
+msgstr ""
+
+#: i18n.cb1_test_3
+msgid "item 3"
+msgstr ""
+
+#: i18n.cb1_test_4
+msgid "item 4"
+msgstr ""
+
+#: i18n.lb1_test_1
+msgid "line 1"
+msgstr ""
+
+#: i18n.lb1_test_2
+msgid "line 2"
+msgstr ""
+
+#: i18n.lb1_test_3
+msgid "line 3"
+msgstr ""
+
+#: i18n.lb1_test_4
+msgid "line 4"
+msgstr ""
+
+#: tfmsecond.caption
+msgid "fmSecond"
+msgstr ""
+
+#: tfmsecond.lbsecond.caption
+msgid "lbSecond"
+msgstr ""
+
+#: tform1.btnsecond.caption
+msgid "Second Form"
+msgstr ""
+
+#: tform1.caption
+msgid "AppLocalizer Test"
+msgstr ""
+
+#: tform1.label1.caption
+msgctxt "tform1.label1.caption"
+msgid "Language"
+msgstr ""
+
+#: tform1.label2.caption
+msgid "Test combobox"
+msgstr ""
+
+#: tform1.label3.caption
+msgid "Test listbox"
+msgstr ""
+
+#: tform1.label4.caption
+msgid "Auto combobox"
+msgstr ""
+
+#: tform1.tstab1.caption
+msgctxt "tform1.tstab1.caption"
+msgid "Language"
+msgstr ""
+
+#: tform1.tstab2.caption
+msgid "Other"
+msgstr ""
+

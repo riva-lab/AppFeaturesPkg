@@ -1,0 +1,35 @@
+object fmSecond: TfmSecond
+  Left = 362
+  Height = 240
+  Top = 136
+  Width = 320
+  Caption = 'fmSecond'
+  ClientHeight = 240
+  ClientWidth = 320
+  DesignTimePPI = 120
+  LCLVersion = '3.0.0.3'
+  object Label1: TLabel
+    Left = 32
+    Height = 20
+    Top = 40
+    Width = 44
+    Caption = 'Label1'
+  end
+  object Button1: TButton
+    Left = 32
+    Height = 30
+    Top = 104
+    Width = 78
+    AutoSize = True
+    Caption = 'Button1'
+    TabOrder = 0
+  end
+  object CheckBox1: TCheckBox
+    Left = 33
+    Height = 24
+    Top = 184
+    Width = 93
+    Caption = 'CheckBox1'
+    TabOrder = 1
+  end
+end

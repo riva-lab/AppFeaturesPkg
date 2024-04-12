@@ -1,0 +1,134 @@
+object Form1: TForm1
+  Left = 358
+  Height = 405
+  Top = 144
+  Width = 381
+  AutoSize = True
+  Caption = 'AppLocalizer Test'
+  ChildSizing.LeftRightSpacing = 10
+  ChildSizing.TopBottomSpacing = 10
+  ChildSizing.HorizontalSpacing = 10
+  ChildSizing.VerticalSpacing = 10
+  ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+  ClientHeight = 405
+  ClientWidth = 381
+  DesignTimePPI = 120
+  OnCreate = FormCreate
+  OnShow = FormShow
+  LCLVersion = '3.0.0.3'
+  object PageControl1: TPageControl
+    Left = 8
+    Height = 311
+    Top = 8
+    Width = 350
+    ActivePage = tsTab1
+    AutoSize = True
+    TabIndex = 0
+    TabOrder = 0
+    object tsTab1: TTabSheet
+      AutoSize = True
+      Caption = 'Language'
+      ClientHeight = 278
+      ClientWidth = 342
+      object Panel1: TPanel
+        Left = 0
+        Height = 278
+        Top = 0
+        Width = 342
+        AutoSize = True
+        BevelOuter = bvNone
+        BorderStyle = bsSingle
+        ChildSizing.LeftRightSpacing = 10
+        ChildSizing.TopBottomSpacing = 10
+        ChildSizing.HorizontalSpacing = 10
+        ChildSizing.VerticalSpacing = 10
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 2
+        ClientHeight = 274
+        ClientWidth = 338
+        TabOrder = 0
+        object cbLang: TComboBox
+          Left = 10
+          Height = 28
+          Top = 10
+          Width = 200
+          Constraints.MinWidth = 200
+          ItemHeight = 20
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = cbLangChange
+        end
+        object Label1: TLabel
+          Left = 220
+          Height = 28
+          Top = 10
+          Width = 108
+          Caption = 'Language'
+          Layout = tlCenter
+        end
+        object cbTest: TComboBox
+          Left = 10
+          Height = 28
+          Top = 48
+          Width = 200
+          ItemHeight = 20
+          Style = csDropDownList
+          TabOrder = 1
+        end
+        object Label2: TLabel
+          Left = 220
+          Height = 28
+          Top = 48
+          Width = 108
+          Caption = 'Test combobox'
+          Layout = tlCenter
+        end
+        object lbTest: TListBox
+          Left = 10
+          Height = 100
+          Top = 86
+          Width = 200
+          ItemHeight = 0
+          TabOrder = 2
+        end
+        object Label3: TLabel
+          Left = 220
+          Height = 100
+          Top = 86
+          Width = 108
+          Caption = 'Test listbox'
+          Layout = tlCenter
+        end
+        object cbAuto: TComboBox
+          Left = 10
+          Height = 28
+          Top = 196
+          Width = 200
+          ItemHeight = 20
+          Style = csDropDownList
+          TabOrder = 3
+        end
+        object Label4: TLabel
+          Left = 220
+          Height = 28
+          Top = 196
+          Width = 108
+          Caption = 'Auto combobox'
+          Layout = tlCenter
+        end
+        object btnSecond: TButton
+          Left = 10
+          Height = 30
+          Top = 234
+          Width = 200
+          Caption = 'Second Form'
+          TabOrder = 4
+          OnClick = btnSecondClick
+        end
+      end
+    end
+    object tsTab2: TTabSheet
+      Caption = 'Other'
+    end
+  end
+end
