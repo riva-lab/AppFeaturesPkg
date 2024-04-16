@@ -1,5 +1,5 @@
 
-{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.0  |
+{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.1  |
   ------------------------------------------------------------------------------
   Class `TAppTuner`. Unit also provides pre-created instance `appTunerEx`.
   `TAppTuner` is used to tune some GUI app options for better appearance.
@@ -18,7 +18,7 @@
   Note. For correct theme applying you must set `IniFile` property
   in the very beginning of app, before `Application.Initialize` method call.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.03.23
+  (c) Riva, 2024.04.16
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
@@ -47,7 +47,8 @@
 
   Versions:
   ------------------------------------------------------------------------------
-  v1.0    2024.03.23   
+  v1.0    2024.03.23
+  v1.1    2024.04.16  Add `ClearProperties` method for resetting saved settings
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -147,7 +148,7 @@ type
     procedure TuneComboboxes;
     procedure MenuAppearance(AColors: TMenuColors; AAddHeight: Integer = 0);
 
-    procedure SavePropertiesToIni;
+    procedure SavePropertiesToIni(AClear: Boolean = False);
     procedure LoadPropertiesFromIni;
 
     procedure ProcessMouseDown(X, Y: Integer);
@@ -182,6 +183,7 @@ type
     FMenuShow:             Boolean;
     FIsDarkTheme:          Boolean;
     FIsDarkThemeAvailable: Boolean;
+    FClear:                Boolean;
     FTheme:                TAppTheme;
 
     procedure DoTuneComboboxes;
@@ -211,6 +213,7 @@ type
 
     procedure SaveProperties;
     procedure LoadProperties;
+    procedure ClearProperties;
 
     procedure MenuAppearance(AColors: TMenuColors; AAddHeight: Integer = 0);
 
@@ -884,7 +887,7 @@ procedure TFormTuned.MenuAppearance(AColors: TMenuColors; AAddHeight: Integer);
     FMenuColors   := AColors;
   end;
 
-procedure TFormTuned.SavePropertiesToIni;
+procedure TFormTuned.SavePropertiesToIni(AClear: Boolean);
   begin
     if Form = nil then Exit;
     if FIniFile = '' then Exit;
@@ -896,17 +899,20 @@ procedure TFormTuned.SavePropertiesToIni;
       IniSection  := 'AppTuner.' + Form.Name;
       EraseSections;
 
-      WriteInteger('Scale', Scale);
-      WriteBoolean('Borderless', Borderless); Borderless := False;
-      WriteInteger('Left', FBounds.Left);
-      WriteInteger('Top', FBounds.Top);
-      WriteInteger('Width', FBounds.Width);
-      WriteInteger('Height', FBounds.Height);
-      WriteInteger('State', Integer(FStateToSave));
-      WriteBoolean('OnTop', StayOnTop);
-      WriteBoolean('AllowDrag', AllowDrag);
-      WriteBoolean('MenuShow', MenuShow);
-      WriteBoolean('MenuTune', MenuTune);
+      if not AClear then
+        begin
+        WriteInteger('Scale', Scale);
+        WriteBoolean('Borderless', Borderless); Borderless := False;
+        WriteInteger('Left', FBounds.Left);
+        WriteInteger('Top', FBounds.Top);
+        WriteInteger('Width', FBounds.Width);
+        WriteInteger('Height', FBounds.Height);
+        WriteInteger('State', Integer(FStateToSave));
+        WriteBoolean('OnTop', StayOnTop);
+        WriteBoolean('AllowDrag', AllowDrag);
+        WriteBoolean('MenuShow', MenuShow);
+        WriteBoolean('MenuTune', MenuTune);
+        end;
 
       IniSection := '';
       finally
@@ -1135,7 +1141,11 @@ procedure TAppTuner.SaveDarkThemeSupport(AIniFile: String);
       Active      := True;
       IniSection  := 'AppTuner.DarkTheme';
       EraseSections;
-      WriteInteger('AppTheme', Integer(FTheme));
+
+      if not FClear then
+        WriteInteger('AppTheme', Integer(FTheme));
+
+      IniSection := '';
       Free;
       end;
 
@@ -1165,6 +1175,7 @@ constructor TAppTuner.Create;
     FScale                := 100;
     FIniFile              := '';
     FIsDarkThemeAvailable := False;
+    FClear                := False;
   end;
 
 destructor TAppTuner.Destroy;
@@ -1210,7 +1221,7 @@ procedure TAppTuner.SaveProperties;
   begin
     if Length(FForms) > 0 then
       for i := 0 to High(FForms) do
-        FForms[i].SavePropertiesToIni;
+        FForms[i].SavePropertiesToIni(FClear);
 
     SaveDarkThemeSupport(FIniFile);
   end;
@@ -1224,6 +1235,11 @@ procedure TAppTuner.LoadProperties;
         FForms[i].LoadPropertiesFromIni;
 
     SetScale(Scale);
+  end;
+
+procedure TAppTuner.ClearProperties;
+  begin
+    FClear := True;
   end;
 
 procedure TAppTuner.MenuAppearance(AColors: TMenuColors; AAddHeight: Integer);
