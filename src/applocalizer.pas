@@ -1,5 +1,5 @@
 
-{ AppLocalizer.pas                                 |  (c) 2024 Riva   |  v1.0  |
+{ AppLocalizer.pas                                 |  (c) 2024 Riva   |  v1.1  |
   ------------------------------------------------------------------------------
   Class for smoothly localization for your application.
   See hints for class methods below.
@@ -7,7 +7,7 @@
   ------------------------------------------------------------------------------
   Lazarus 3.0  FPC 3.2.2
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.03.23
+  (c) Riva, 2024.04.15
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
@@ -36,7 +36,8 @@
 
   Versions:
   ------------------------------------------------------------------------------
-  v1.0    2024.03.23   
+  v1.0    2024.03.23
+  v1.1    2024.04.15  Add method `EnumerateComponents`
   -----------------------------------------------------------------------------}
 unit AppLocalizer;
 
@@ -46,7 +47,7 @@ interface
 
 uses
   Classes, SysUtils, LazUTF8, LazFileUtils, Math, IniPropStorage, StdCtrls,
-  LCLTranslator, Translations;
+  Forms, LCLTranslator, Translations, Dialogs;
 
 type
 
@@ -101,6 +102,12 @@ type
 
     constructor Create;
     destructor Destroy; override;
+
+    { This method can help preserve item indices of TComboBox, TListBox.
+      Call it at point to which you want backup indices.
+      Usually that point is before starting localization.
+    }
+    procedure EnumerateComponents;
 
     { Load list of languages from INI-file `IniFile`.
       INI file must contain list of languages.
@@ -316,6 +323,20 @@ destructor TAppLocalizer.Destroy;
     SetLength(FLanguages, 0);
 
     inherited Destroy;
+  end;
+
+procedure TAppLocalizer.EnumerateComponents;
+  var
+    i, j: Integer;
+    c:    TComponent;
+  begin
+    for i := 0 to Screen.FormCount - 1 do
+      for j := 0 to Screen.Forms[i].ComponentCount - 1 do
+        begin
+        c := Screen.Forms[i].Components[j];
+        if c.ClassName = 'TComboBox' then Localize(c, TComboBox(c).Items.ToStringArray);
+        if c.ClassName = 'TListBox' then Localize(c, TListBox(c).Items.ToStringArray);
+        end;
   end;
 
 procedure TAppLocalizer.Load(IniFile, LangFileName: String; LangDefaultTitle: String);
