@@ -1,5 +1,5 @@
 
-{ AppSettings.pas                                  |  (c) 2024 Riva   |  v1.0  |
+{ AppSettings.pas                                  |  (c) 2024 Riva   |  v1.1  |
   ------------------------------------------------------------------------------
   Class `TAppSettings` for easy work with settings.
   It allows exchange between class property and variable by pointer.
@@ -34,13 +34,14 @@
   TTimeEdit        Text              String
   TCheckGroup      Checked[]         String
   TCheckListBox    Checked[]         String
+  TMemo            Lines.CommaText   String
 
   Класс для обмена значениями между
   свойством компонента и переменной по указателю.
   Используется для упрощения работы с массивом настроек.
   Также сохраняет настройки в заданный ini-файл.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.03.23
+  (c) Riva, 2024.04.16
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
@@ -69,7 +70,11 @@
 
   Versions:
   ------------------------------------------------------------------------------
-  v1.0    2024.03.23   
+  v1.0    2024.03.23
+  v1.1    2024.04.16  Fix loading mechanism
+                      Fix bug in `Find(TComponent)`
+                      Add `TMemo` component support
+                      Add `Clear` method for settings reset
   -----------------------------------------------------------------------------}
 unit AppSettings;
 
@@ -79,7 +84,7 @@ interface
 
 uses
   Classes, SysUtils, Spin, StdCtrls, ExtCtrls, Dialogs, Graphics, MaskEdit,
-  ComCtrls, CheckLst, PairSplitter, EditBtn, ActnList, IniPropStorage;
+  ComCtrls, CheckLst, PairSplitter, EditBtn, ActnList, IniPropStorage, base64;
 
 type
 
@@ -124,6 +129,7 @@ type
     FIniStorage: TIniPropStorage;
     FItems:      array of TAppSettingsItem;
     FIniFile:    String;
+    FClear:      Boolean;
 
     procedure Reset;
     function Find(AComponent: TComponent): Integer;
@@ -150,6 +156,7 @@ type
 
     procedure Save;
     procedure Load;
+    procedure Clear;
 
     procedure SyncComponents;
     procedure SyncValues;
@@ -237,6 +244,7 @@ procedure TAppSettingsItem.SyncComponent;
         'TEditButton': TEditButton(_c).Text       := (PString(_p))^;
         'TFileNameEdit': TFileNameEdit(_c).Text   := (PString(_p))^;
         'TDirectoryEdit': TDirectoryEdit(_c).Text := (PString(_p))^;
+        'TMemo': TMemo(_c).Lines.CommaText        := (PString(_p))^;
 
         'TCheckGroup':
           if TCheckGroup(_c).Items.Count > 0 then
@@ -290,6 +298,7 @@ procedure TAppSettingsItem.SyncValue;
         'TEditButton': (PString(_p))^    := TEditButton(_c).Text;
         'TFileNameEdit': (PString(_p))^  := TFileNameEdit(_c).Text;
         'TDirectoryEdit': (PString(_p))^ := TDirectoryEdit(_c).Text;
+        'TMemo': (PString(_p))^          := TMemo(_c).Lines.CommaText;
 
         'TCheckGroup':
           begin
@@ -343,6 +352,9 @@ procedure TAppSettingsItem.Write(AStorage: TIniPropStorage);
           'TTimeEdit':
             WriteString(_n, (PString(_p))^);
 
+          'TMemo':
+            WriteString(_n, EncodeStringBase64((PString(_p))^));
+
           'TFloatSpinEdit': WriteString(_n, (PDouble(_p))^.ToString(FFS));
           'TColorButton': WriteInteger(_n, (PColor(_p))^);
           end;
@@ -374,6 +386,8 @@ procedure TAppSettingsItem.Read(AStorage: TIniPropStorage);
       if Assigned(Component) then
         begin
         _n := Component.Name;
+        if ReadString(_n, '{320B3B72-B768-4CCC-AA7C-10FF74F339F3}')
+          = '{320B3B72-B768-4CCC-AA7C-10FF74F339F3}' then Exit;
 
         case Component.ClassName of
 
@@ -389,6 +403,9 @@ procedure TAppSettingsItem.Read(AStorage: TIniPropStorage);
           'TTimeEdit':
             (PString(_p))^ := ReadString(_n, '');
 
+          'TMemo':
+            (PString(_p))^ := DecodeStringBase64(ReadString(_n, ''));
+
           'TFloatSpinEdit': (PDouble(_p))^ := StrToFloat(ReadString(_n, '0'), FFS);
           'TColorButton': (PColor(_p))^    := TColor(ReadInteger(_n, 0));
           end;
@@ -397,7 +414,7 @@ procedure TAppSettingsItem.Read(AStorage: TIniPropStorage);
       if ID <> '' then
         case FValueType of
           stInt: (PInteger(_p))^     := ReadInteger(ID, FValueDef.ToInteger);
-          stInt64: (PInt64(_p))^     := ReadInteger(ID, FValueDef.ToInt64);
+          stInt64: (PInt64(_p))^     := ReadString(ID, FValueDef).ToInt64;
           stWord: (PWord(_p))^       := StrToQWord(ReadString(ID, FValueDef));
           stQWord: (PQWord(_p))^     := StrToQWord(ReadString(ID, FValueDef));
           stBool: (PBoolean(_p))^    := ReadBoolean(ID, FValueDef.ToBoolean);
@@ -428,7 +445,7 @@ function TAppSettings.Find(AComponent: TComponent): Integer;
     if not Assigned(AComponent) then Exit;
     if Length(FItems) = 0 then Exit;
     for i := 0 to High(FItems) do
-      if FItems[i].Component.Name = AComponent.Name then Exit(i);
+      if FItems[i].Component = AComponent then Exit(i);
   end;
 
 function TAppSettings.Find(UID: String): Integer;
@@ -485,6 +502,7 @@ constructor TAppSettings.Create;
     FIniStorage.Free;
     FIniStorage := TIniPropStorage.Create(nil);
     FIniFile    := '';
+    FClear      := False;
 
     OnLoad           := nil;
     OnSave           := nil;
@@ -532,9 +550,7 @@ procedure TAppSettings.Save;
       IniSection := 'TAppSettingsRecord';
       EraseSections;
 
-      WriteInteger('TAppSettingsRecord_Count', Length(FItems));
-
-      if Length(FItems) > 0 then
+      if not FClear and (Length(FItems) > 0) then
         for i := 0 to High(FItems) do
           FItems[i].Write(FIniStorage);
 
@@ -546,7 +562,7 @@ procedure TAppSettings.Save;
 
 procedure TAppSettings.Load;
   var
-    i, _length: Integer;
+    i: Integer;
   begin
     if FIniFile = '' then Exit;
 
@@ -554,9 +570,8 @@ procedure TAppSettings.Load;
       begin
       Active     := True;
       IniSection := 'TAppSettingsRecord';
-      _length    := ReadInteger('TAppSettingsRecord_Count', 0);
 
-      if _length > 0 then
+      if Length(FItems) > 0 then
         for i := 0 to High(FItems) do
           FItems[i].Read(FIniStorage);
 
@@ -564,6 +579,11 @@ procedure TAppSettings.Load;
       end;
 
     if Assigned(OnLoad) then OnLoad(Self);
+  end;
+
+procedure TAppSettings.Clear;
+  begin
+    FClear := True;
   end;
 
 procedure TAppSettings.SyncComponents;
