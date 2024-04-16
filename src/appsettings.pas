@@ -479,8 +479,6 @@ procedure TAppSettings.SetIniFile(AValue: String);
   end;
 
 constructor TAppSettings.Create;
-  var
-    i: Integer;
   begin
     Reset;
 
