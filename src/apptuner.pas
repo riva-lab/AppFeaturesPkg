@@ -1,5 +1,5 @@
 
-{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.1  |
+{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.2  |
   ------------------------------------------------------------------------------
   Class `TAppTuner`. Unit also provides pre-created instance `appTunerEx`.
   `TAppTuner` is used to tune some GUI app options for better appearance.
@@ -18,7 +18,7 @@
   Note. For correct theme applying you must set `IniFile` property
   in the very beginning of app, before `Application.Initialize` method call.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.04.16
+  (c) Riva, 2024.04.17
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
@@ -49,6 +49,7 @@
   ------------------------------------------------------------------------------
   v1.0    2024.03.23
   v1.1    2024.04.16  Add `ClearProperties` method for resetting saved settings
+  v1.2    2024.04.17  Fix dark theme multiple applying
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -242,6 +243,10 @@ var
 
 
 implementation
+
+
+var
+  darkModeInitDone: Boolean = False;
 
 
 function GetFormOffset(AForm: TForm): TPoint;
@@ -1100,6 +1105,7 @@ procedure TAppTuner.LoadDarkThemeSupport(AIniFile: String);
     {$EndIf}
   begin
     if AIniFile = '' then Exit;
+    if darkModeInitDone then Exit;
     {$IFDEF USE_METADARKSTYLE}
 
     // dark theme works only on windows 1809 (build 17763) and higher
@@ -1118,6 +1124,7 @@ procedure TAppTuner.LoadDarkThemeSupport(AIniFile: String);
       uMetaDarkStyle.ApplyMetaDarkStyle(DefaultDark); // apply theme  
       FIsDarkTheme          := IsDarkModeEnabled;
       FIsDarkThemeAvailable := True;
+      darkModeInitDone      := True;
       Free;
       end;
 
