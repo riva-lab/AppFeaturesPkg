@@ -1,5 +1,5 @@
 
-{ AppSettings.pas                                  |  (c) 2024 Riva   |  v1.1  |
+{ AppSettings.pas                                  |  (c) 2024 Riva   |  v1.2  |
   ------------------------------------------------------------------------------
   Class `TAppSettings` for easy work with settings.
   It allows exchange between class property and variable by pointer.
@@ -41,7 +41,7 @@
   Используется для упрощения работы с массивом настроек.
   Также сохраняет настройки в заданный ini-файл.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.04.16
+  (c) Riva, 2024.04.17
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
@@ -75,6 +75,7 @@
                       Fix bug in `Find(TComponent)`
                       Add `TMemo` component support
                       Add `Clear` method for settings reset
+  v1.2    2024.04.17  Fix `TPairSplitter` saving/restoring
   -----------------------------------------------------------------------------}
 unit AppSettings;
 
@@ -257,7 +258,7 @@ procedure TAppSettingsItem.SyncComponent;
               TCheckListBox(_c).Checked[i] := (PString(_p))^[i + 1] = '+';
 
         'TPairSplitter':
-          TPairSplitter(_c).Position := (PInteger(_p))^ * TPairSplitter(_c).Width div 1000;
+          TPairSplitter(_c).Position := Round((PInteger(_p))^ * TPairSplitter(_c).Width / 1000);
         end;
       except
       end;
@@ -317,7 +318,7 @@ procedure TAppSettingsItem.SyncValue;
           end;
 
         'TPairSplitter':
-          (PInteger(_p))^ := 1000 * TPairSplitter(_c).Position div TPairSplitter(_c).Width;
+          (PInteger(_p))^ := Round(1000 * TPairSplitter(_c).Position / TPairSplitter(_c).Width);
         end;
       except
       end;
