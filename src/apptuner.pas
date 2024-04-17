@@ -1,5 +1,5 @@
 
-{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.2  |
+{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.3  |
   ------------------------------------------------------------------------------
   Class `TAppTuner`. Unit also provides pre-created instance `appTunerEx`.
   `TAppTuner` is used to tune some GUI app options for better appearance.
@@ -50,6 +50,8 @@
   v1.0    2024.03.23
   v1.1    2024.04.16  Add `ClearProperties` method for resetting saved settings
   v1.2    2024.04.17  Fix dark theme multiple applying
+  v1.3    2024.04.17  Fix menu drawing bug in nested proc DrawBar
+                      Add custom drawn menu update on form `OnChangeBounds`
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -115,6 +117,7 @@ type
     FMenuShow:      Boolean;
     FMenuItemH:     Integer;
     FMenuHdrCnt:    Integer;
+    FMenuHdrCnR:    Integer;
     FMenuAddHeight: Integer;
     FMenuEmptyRect: TRect;
     FMenuColors:    TMenuColors;
@@ -520,6 +523,8 @@ procedure TFormTuned.SetMenuAddHeight(AValue: Integer);
   end;
 
 procedure TFormTuned.FormOnChangeBounds(Sender: TObject);
+  var
+    tmpTune: Boolean;
   begin
     case Form.WindowState of
 
@@ -539,6 +544,10 @@ procedure TFormTuned.FormOnChangeBounds(Sender: TObject);
         FStateToSave := wsMaximized;
         end;
       end;
+
+    tmpTune  := MenuTune;
+    MenuTune := False;
+    MenuTune := tmpTune;
 
     FStateBackup := Form.WindowState;
   end;
@@ -631,15 +640,27 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
     end;
 
   procedure DrawBar;
+    const
+      _left: Integer  = 0;
+      _right: Integer = 0;
     begin
       Check(item.IsInMenuBar, FMenuColors.Bar.Back, FMenuColors.Bar.Text);
 
-      if FMenuHdrCnt = 1 then
-        FMenuEmptyRect := Classes.Rect(ARect.Right, ARect.Top, Screen.WorkAreaWidth * 2, ARect.Bottom);
+      if not item.RightJustify then
+        begin
+        if FMenuHdrCnt = 1 then _left := ARect.Right;
+        if FMenuHdrCnt > 0 then Dec(FMenuHdrCnt);
+        end
+      else
+      if FMenuHdrCnR > 0 then
+        begin
+        FMenuHdrCnR := 0;
+        _right      := ARect.Left - Form.Width - Screen.WorkAreaWidth * 2;
+        end;
 
-      if FMenuHdrCnt > 0 then
-        Dec(FMenuHdrCnt);
-
+      FMenuEmptyRect := Classes.Rect(
+        _left, ARect.Top,
+        _right + Form.Width + Screen.WorkAreaWidth * 2, ARect.Bottom);
 
       ACanvas.Pen.Color := ACanvas.Brush.Color;
       ACanvas.Rectangle(FMenuEmptyRect);
@@ -653,6 +674,7 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
         Check(StateIs([odSelected]), FMenuColors.Item.Select, FMenuColors.Item.TextSel);
         Check(StateIs([odDisabled]), FMenuColors.Disabled.Back, FMenuColors.Disabled.Text);
         Check(StateIs([odSelected, odDisabled]), FMenuColors.Disabled.Select, FMenuColors.Disabled.TextSel);
+        Check(StateIs([odDisabled]) and item.IsInMenuBar, FMenuColors.Bar.Back, FMenuColors.Disabled.Text);
         end;
 
       ACanvas.Pen.Color := ACanvas.Brush.Color;
@@ -836,6 +858,8 @@ procedure TFormTuned.MenuMeasItem(Sender: TObject; ACanvas: TCanvas; var AWidth,
     if not item.IsInMenuBar then
       AWidth      := Round(FScale / 100 * (AWidth + 4))
     else
+    if item.RightJustify then
+      FMenuHdrCnR += 1 else
       FMenuHdrCnt += 1;
   end;
 
@@ -853,6 +877,7 @@ constructor TFormTuned.Create;
 
     FMenuItemH     := 0;
     FMenuHdrCnt    := 0;
+    FMenuHdrCnR    := 0;
     FMenuAddHeight := 0;
     MenuDark       := False;
     FMenuTune      := False;
