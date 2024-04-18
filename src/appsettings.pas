@@ -76,6 +76,7 @@
                       Add `TMemo` component support
                       Add `Clear` method for settings reset
   v1.2    2024.04.17  Fix `TPairSplitter` saving/restoring
+  v1.2.1  2024.04.18  Fix bug in `TMemo` saving/restoring
   -----------------------------------------------------------------------------}
 unit AppSettings;
 
@@ -245,7 +246,7 @@ procedure TAppSettingsItem.SyncComponent;
         'TEditButton': TEditButton(_c).Text       := (PString(_p))^;
         'TFileNameEdit': TFileNameEdit(_c).Text   := (PString(_p))^;
         'TDirectoryEdit': TDirectoryEdit(_c).Text := (PString(_p))^;
-        'TMemo': TMemo(_c).Lines.CommaText        := (PString(_p))^;
+        'TMemo': TMemo(_c).Lines.Text             := (PString(_p))^;
 
         'TCheckGroup':
           if TCheckGroup(_c).Items.Count > 0 then
@@ -299,7 +300,7 @@ procedure TAppSettingsItem.SyncValue;
         'TEditButton': (PString(_p))^    := TEditButton(_c).Text;
         'TFileNameEdit': (PString(_p))^  := TFileNameEdit(_c).Text;
         'TDirectoryEdit': (PString(_p))^ := TDirectoryEdit(_c).Text;
-        'TMemo': (PString(_p))^          := TMemo(_c).Lines.CommaText;
+        'TMemo': (PString(_p))^          := TMemo(_c).Lines.Text;
 
         'TCheckGroup':
           begin
