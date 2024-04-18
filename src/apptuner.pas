@@ -1,5 +1,5 @@
 
-{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.3  |
+{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.4  |
   ------------------------------------------------------------------------------
   Class `TAppTuner`. Unit also provides pre-created instance `appTunerEx`.
   `TAppTuner` is used to tune some GUI app options for better appearance.
@@ -18,7 +18,7 @@
   Note. For correct theme applying you must set `IniFile` property
   in the very beginning of app, before `Application.Initialize` method call.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.04.17
+  (c) Riva, 2024.04.18
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
@@ -52,6 +52,7 @@
   v1.2    2024.04.17  Fix dark theme multiple applying
   v1.3    2024.04.17  Fix menu drawing bug in nested proc DrawBar
                       Add custom drawn menu update on form `OnChangeBounds`
+  v1.4    2024.04.18  Add property `SaveProps` for controlling save/load from ini
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -145,6 +146,7 @@ type
 
   public
     AllowDrag: Boolean;
+    SaveProps: Boolean;
 
     constructor Create;
     destructor Destroy; override;
@@ -212,8 +214,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    procedure AddForm(AForm: TForm);
-    procedure AddAllForms;
+    procedure AddForm(AForm: TForm; ASaveProps: Boolean = False);
+    procedure AddAllForms(ASaveProps: Boolean = False);
 
     procedure SaveProperties;
     procedure LoadProperties;
@@ -868,6 +870,7 @@ constructor TFormTuned.Create;
     Form             := nil;
     FIniFile         := '';
     AllowDrag        := False;
+    SaveProps        := False;
     FStayOnTop       := False;
     FBorderless      := False;
     FLoaded          := False;
@@ -919,6 +922,7 @@ procedure TFormTuned.MenuAppearance(AColors: TMenuColors; AAddHeight: Integer);
 
 procedure TFormTuned.SavePropertiesToIni(AClear: Boolean);
   begin
+    if not SaveProps then Exit;
     if Form = nil then Exit;
     if FIniFile = '' then Exit;
 
@@ -952,6 +956,7 @@ procedure TFormTuned.SavePropertiesToIni(AClear: Boolean);
 
 procedure TFormTuned.LoadPropertiesFromIni;
   begin
+    if not SaveProps then Exit;
     if FLoaded then Exit;
     if Form = nil then Exit;
     if FIniFile = '' then Exit;
@@ -1215,7 +1220,7 @@ destructor TAppTuner.Destroy;
     inherited Destroy;
   end;
 
-procedure TAppTuner.AddForm(AForm: TForm);
+procedure TAppTuner.AddForm(AForm: TForm; ASaveProps: Boolean);
   var
     i: Integer;
   begin
@@ -1231,6 +1236,7 @@ procedure TAppTuner.AddForm(AForm: TForm);
       end;
 
     FForms[i].Form            := AForm;
+    FForms[i].SaveProps       := ASaveProps;
     FForms[i].IniFile         := FIniFile;
     FForms[i].Scale           := FScale;
     FForms[i].ToolbuttonSize  := FToolbuttonSize;
@@ -1239,12 +1245,12 @@ procedure TAppTuner.AddForm(AForm: TForm);
     FForms[i].MenuDark        := FIsDarkTheme;
   end;
 
-procedure TAppTuner.AddAllForms;
+procedure TAppTuner.AddAllForms(ASaveProps: Boolean);
   var
     i: Integer;
   begin
     for i := 0 to Screen.FormCount - 1 do
-      AddForm(Screen.Forms[i]);
+      AddForm(Screen.Forms[i], ASaveProps);
   end;
 
 procedure TAppTuner.SaveProperties;
