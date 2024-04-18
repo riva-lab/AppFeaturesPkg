@@ -54,6 +54,7 @@
                       Add custom drawn menu update on form `OnChangeBounds`
   v1.4    2024.04.18  Add property `SaveProps` for controlling save/load from ini
   v1.5    2024.04.18  Change menu disabled item text colors for light theme
+  v1.5.1  2024.04.18  Change submenu right arrow
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -597,7 +598,7 @@ procedure TFormTuned.ThemeApply;
 
 procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
   const
-    subMark   = '〉';
+    subMark   = '❯';
     checkMark = '✔';
     radioMark = '🔘';
   var
