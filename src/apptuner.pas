@@ -1,5 +1,5 @@
 
-{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.4  |
+{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.5  |
   ------------------------------------------------------------------------------
   Class `TAppTuner`. Unit also provides pre-created instance `appTunerEx`.
   `TAppTuner` is used to tune some GUI app options for better appearance.
@@ -53,6 +53,7 @@
   v1.3    2024.04.17  Fix menu drawing bug in nested proc DrawBar
                       Add custom drawn menu update on form `OnChangeBounds`
   v1.4    2024.04.18  Add property `SaveProps` for controlling save/load from ini
+  v1.5    2024.04.18  Change menu disabled item text colors for light theme
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -513,8 +514,8 @@ procedure TFormTuned.SetMenuDark(AValue: Boolean);
         Mark.TextSel     := clMenuText;
         Disabled.Back    := clMenu;
         Disabled.Select  := cl3DLight;
-        Disabled.Text    := clActiveBorder;
-        Disabled.TextSel := clActiveBorder;
+        Disabled.Text    := clBtnShadow;
+        Disabled.TextSel := clBtnShadow;
         end;
   end;
 
