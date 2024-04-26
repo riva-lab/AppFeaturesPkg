@@ -597,15 +597,27 @@ procedure TFormTuned.ThemeApply;
   end;
 
 procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
-  const
-    subMark   = '❯';
-    checkMark = '✔';
-    radioMark = '🔘';
+  //const
+  //  subMark   = '❯';
+  //  checkMark = '✔';
+  //  radioMark = '🔘';
   var
     rx, y, wi, ws: Integer;
     item:          TMenuItem;
     title:         String;
+    subMark:       String = '❯';
+    checkMark:     String = '✔';
+    radioMark:     String = '🔘';
     imList:        TImageList;
+    oldWin:        Boolean;
+
+  procedure LoadMarks;
+    begin
+      if not oldWin then Exit;
+      subMark   := '>';
+      checkMark := 'v';
+      radioMark := '●';
+    end;
 
   function GetCaption: String;
     begin
@@ -730,7 +742,9 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
             s := radioMark else
             s := checkMark;
 
-          ACanvas.Font.Height := Round(r / 1.8);
+          if oldWin then
+            ACanvas.Font.Height := Round(r / 1.2) else
+            ACanvas.Font.Height := Round(r / 1.8);
           a := Round((r - ACanvas.TextHeight(s)) / 2);
           r := Round((r - ACanvas.TextWidth(s)) / 2);
           ACanvas.Brush.Style := bsClear;
@@ -799,6 +813,7 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
     item   := TMenuItem(Sender);
     title  := GetCaption;
     imList := item.GetImageList as TImageList;
+    oldWin := Win32BuildNumber < 6000 {WinVista or lower};
 
     ACanvas.Font.Color := clYellow;
 
@@ -831,6 +846,7 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
     Check(StateIs([odDisabled]), FMenuColors.Disabled.Back, FMenuColors.Disabled.Text);
     Check(StateIs([odDisabled, odSelected]), FMenuColors.Disabled.Select, FMenuColors.Disabled.TextSel);
 
+    LoadMarks;
     DrawCaption;
     DrawSubmenuArrow;
     DrawShortcuts;
