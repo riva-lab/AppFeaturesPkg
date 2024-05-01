@@ -1,5 +1,5 @@
 
-{ AppLocalizer.pas                                 |  (c) 2024 Riva   |  v1.1  |
+{ AppLocalizer.pas                                 |  (c) 2024 Riva   |  v1.2  |
   ------------------------------------------------------------------------------
   Class for smoothly localization for your application.
   See hints for class methods below.
@@ -38,6 +38,7 @@
   ------------------------------------------------------------------------------
   v1.0    2024.03.23
   v1.1    2024.04.15  Add method `EnumerateComponents`
+  v1.2    2024.05.01  Change default language caption
   -----------------------------------------------------------------------------}
 unit AppLocalizer;
 
@@ -265,7 +266,7 @@ procedure TAppLocalizer.GetLanguagesFromIni;
       SetLength(FLanguages, 0);
       SetLength(FLangCodes, 0);
 
-      AddLang('', Format('System or native (%s, %s)',
+      AddLang('', Format('Internal or system (%s, %s)',
         [GetLanguageID.LanguageCode, GetLanguageID.LanguageID]));
 
       if cnt > 0 then
