@@ -55,6 +55,7 @@
   v1.4    2024.04.18  Add property `SaveProps` for controlling save/load from ini
   v1.5    2024.04.18  Change menu disabled item text colors for light theme
   v1.5.1  2024.04.18  Change submenu right arrow
+  v1.5.2  2024.05.01  Fix menu item width measuring
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -876,7 +877,7 @@ procedure TFormTuned.MenuMeasItem(Sender: TObject; ACanvas: TCanvas; var AWidth,
     if item.GetParentMenu.OnDrawItem = nil then Exit;
 
     if not item.IsInMenuBar then
-      AWidth      := Round(FScale / 100 * (AWidth + 4))
+      AWidth      := Round(FScale / 100 * (AWidth + 4)) + 8
     else
     if item.RightJustify then
       FMenuHdrCnR += 1 else
