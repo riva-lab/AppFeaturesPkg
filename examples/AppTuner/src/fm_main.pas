@@ -128,7 +128,7 @@ procedure TfmMain.FormShow(Sender: TObject);
     OnShow := nil;
 
     // init tuner
-    appTunerEx.AddAllForms;
+    appTunerEx.AddAllForms(True);
     appTunerEx.LoadProperties;
     appTunerEx.TuneComboboxes := True;
 
