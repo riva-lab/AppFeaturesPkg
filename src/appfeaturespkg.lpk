@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Name Value="AppFeaturesPkg"/>
     <Type Value="RunTimeOnly"/>
-    <Author Value="(c) Riva, 2024.04.12"/>
+    <Author Value="(c) Riva, 2024 - 2025"/>
     <CompilerOptions>
       <Version Value="11"/>
       <PathDelim Value="\"/>
