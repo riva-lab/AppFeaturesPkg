@@ -866,7 +866,8 @@ procedure TFormTuned.MenuMeasItem(Sender: TObject; ACanvas: TCanvas; var AWidth,
     if not item.IsInMenuBar then
       AWidth := Round(FScale / 100 * (AWidth + 4)) + 8
     else
-    if (FMainMenu.Items.Count > 0) and (item.Handle = FMainMenu.Items[0].Handle) then
+    if not Assigned(FMainMenu) or
+      ((FMainMenu.Items.Count > 0) and (item.Handle = FMainMenu.Items[0].Handle)) then
       begin
       // reset menu bar coordinates
       FMenuBarCoordL := 0;
