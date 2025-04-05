@@ -1,5 +1,5 @@
 
-{ AppLocalizer.pas                                 |  (c) 2024 Riva   |  v1.2  |
+{ AppLocalizer.pas                            |  (c) 2024-2025 Riva   |  v1.3  |
   ------------------------------------------------------------------------------
   Class for smoothly localization for your application.
   See hints for class methods below.
@@ -7,13 +7,13 @@
   ------------------------------------------------------------------------------
   Lazarus 3.0  FPC 3.2.2
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.04.15
+  (c) Riva, 2024-2025
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
   MIT License
   ------------------------------------------------------------------------------
-  Copyright (c) 2024 Riva
+  Copyright (c) 2024-2025 Riva
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to
@@ -39,6 +39,8 @@
   v1.0    2024.03.23
   v1.1    2024.04.15  Add method `EnumerateComponents`
   v1.2    2024.05.01  Change default language caption
+  v1.3    2025.04.05  Single event `OnLanguageChange` replaced by
+                      method `AddOnLanguageChangeHandler()`
   -----------------------------------------------------------------------------}
 unit AppLocalizer;
 
@@ -88,6 +90,7 @@ type
     FLangDef:   String;
     FlangSys:   String;
     FLocComps:  array of TAppLocalizedComponent;
+    FOnLangChg: array of TNotifyEvent;
 
     procedure SetCurrentLanguage(AValue: Integer);
     procedure GetLanguagesFromIni;
@@ -95,11 +98,6 @@ type
     function GetCurrentLangCode: String;
 
   public
-    { Event occured on language changed.
-      Use it to manually translate some specific components.
-      You can use Localize() method to do this.
-    }
-    OnLanguageChange: TNotifyEvent;
 
     constructor Create;
     destructor Destroy; override;
@@ -118,6 +116,12 @@ type
       'example' for localization files 'example.xx.po' or 'example.xx_yy.po'
     }
     procedure Load(IniFile, LangFileName: String; LangDefaultTitle: String = '');
+
+    { Add your own event that will be occured on language change.
+      Use it to manually translate some specific components.
+      You can use Localize() method inside event to do this.
+    }
+    procedure AddOnLanguageChangeHandler(AOnLanguageChange: TNotifyEvent);
 
     { Update component with provided strings from array
       Supported: TComboBox, TListBox.
@@ -225,8 +229,10 @@ procedure TAppLocalizer.SetCurrentLanguage(AValue: Integer);
 
     SetDefaultLang(CurrentLangCode, '', FLangFile);
 
-    // event on lang change
-    if Assigned(OnLanguageChange) then OnLanguageChange(Self);
+    // handle user events on lang change
+    if Length(FOnLangChg) > 0 then
+      for i := 0 to High(FOnLangChg) do
+        if Assigned(FOnLangChg[i]) then FOnLangChg[i](Self);
 
     if Length(FLocComps) > 0 then
       for i := 0 to High(FLocComps) do
@@ -308,7 +314,7 @@ constructor TAppLocalizer.Create;
     FLangDef  := '';
     FlangSys  := GetLanguageID.LanguageID;
 
-    OnLanguageChange := nil;
+    SetLength(FOnLangChg, 0);
   end;
 
 destructor TAppLocalizer.Destroy;
@@ -348,6 +354,12 @@ procedure TAppLocalizer.Load(IniFile, LangFileName: String; LangDefaultTitle: St
 
     if FLangDef = '' then FLangDef := 'EN, English';
     GetLanguagesFromIni;
+  end;
+
+procedure TAppLocalizer.AddOnLanguageChangeHandler(AOnLanguageChange: TNotifyEvent);
+  begin
+    SetLength(FOnLangChg, Length(FOnLangChg) + 1);
+    FOnLangChg[High(FOnLangChg)] := AOnLanguageChange;
   end;
 
 procedure TAppLocalizer.Localize(AComponent: TComponent; const AStrings: TStringArray);
