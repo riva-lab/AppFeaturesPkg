@@ -1,5 +1,5 @@
 
-{ AppTuner.pas                                     |  (c) 2024 Riva   |  v1.5  |
+{ AppTuner.pas                                |  (c) 2024-2025 Riva   |  v1.5  |
   ------------------------------------------------------------------------------
   Class `TAppTuner`. Unit also provides pre-created instance `appTunerEx`.
   `TAppTuner` is used to tune some GUI app options for better appearance.
@@ -18,13 +18,13 @@
   Note. For correct theme applying you must set `IniFile` property
   in the very beginning of app, before `Application.Initialize` method call.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.04.18
+  (c) Riva, 2024-2025
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
   MIT License
   ------------------------------------------------------------------------------
-  Copyright (c) 2024 Riva
+  Copyright (c) 2024-2025 Riva
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to
@@ -55,7 +55,7 @@
   v1.4    2024.04.18  Add property `SaveProps` for controlling save/load from ini
   v1.5    2024.04.18  Change menu disabled item text colors for light theme
   v1.5.1  2024.04.18  Change submenu right arrow
-  v1.5.2  2024.05.01  Fix menu item width measuring
+  v1.5.2  2025.05.01  Fix menu item width measuring
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
