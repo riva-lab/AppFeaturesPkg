@@ -57,6 +57,7 @@
   v1.5.1  2024.04.18  Change submenu right arrow
   v1.5.2  2025.04.01  Fix menu item width measuring
   v1.6    2025.04.05  Fix menu bar drawing
+  v1.6.1  2025.04.08  Fix menu bar drawing again
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -661,10 +662,9 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
       Check(item.IsInMenuBar, FMenuColors.Bar.Back, FMenuColors.Bar.Text);
 
       if item.RightJustify then
-        FMenuBarCoordR := Min(FMenuBarCoordR, ARect.Left) else
+        FMenuBarCoordR := Min(FMenuBarCoordR, ARect.Left + 1) else
         FMenuBarCoordL := Max(FMenuBarCoordL, ARect.Right);
 
-      ACanvas.Pen.Color := ACanvas.Brush.Color;
       ACanvas.Rectangle(
         FMenuBarCoordL, ARect.Top,
         FMenuBarCoordR, ARect.Bottom);
@@ -683,7 +683,7 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
 
       ACanvas.Pen.Color := ACanvas.Brush.Color;
 
-      with ARect do ACanvas.Rectangle(Left, Top, Right, Bottom);
+      with ARect do ACanvas.Rectangle(Left, Top, Right + 1, Bottom);
     end;
 
   procedure DrawDelimiter;
@@ -817,6 +817,7 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
 
     y := ARect.Top + (ARect.Height - ACanvas.TextHeight(title)) div 2;
 
+    ACanvas.Pen.Style   := psClear;
     ACanvas.Brush.Color := FMenuColors.Item.Back;
     if item.IsInMenuBar then DrawBar;
 
