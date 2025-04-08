@@ -52,7 +52,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
   begin
-    appLocalizerEx.OnLanguageChange := @OnLangChange;
+    appLocalizerEx.AddOnLanguageChangeHandler(@OnLangChange);
     appLocalizerEx.Load(
       Format('%0:slang%0:slanguages.ini', [DirectorySeparator]),
       Format('%0:slang%0:sAppLocalizer', [DirectorySeparator]));
