@@ -37,6 +37,7 @@ type
     Label5:       TLabel;
     Label6:       TLabel;
     Label7:       TLabel;
+    Label8:       TLabel;
     MainMenu1:    TMainMenu;
     MenuItem1:    TMenuItem;
     MenuItem10:   TMenuItem;
@@ -83,6 +84,7 @@ type
     Panel4:       TPanel;
     PopupMenu1:   TPopupMenu;
     seFontScale:  TSpinEdit;
+    seMenuRight:  TSpinEdit;
     Separator1:   TMenuItem;
     Separator2:   TMenuItem;
     Separator3:   TMenuItem;
@@ -238,6 +240,18 @@ procedure TfmMain.actionExecute(Sender: TObject);
         begin
         appTunerEx.Theme := TAppTheme(cbTheme.ItemIndex);
         //ShowMessage('Restart app to change theme.');
+        end;
+
+      'seMenuRight':
+        begin
+        appTunerEx.Form[Self].MenuShow := False;
+
+        MenuItem1.RightJustify  := seMenuRight.Value > 3;
+        MenuItem3.RightJustify  := seMenuRight.Value > 2;
+        MenuItem7.RightJustify  := seMenuRight.Value > 1;
+        MenuItem20.RightJustify := seMenuRight.Value > 0;
+
+        appTunerEx.Form[Self].MenuShow := cbMenuShow.Checked;
         end;
       end;
   end;

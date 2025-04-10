@@ -232,7 +232,7 @@ object fmMain: TfmMain
       Left = 378
       Height = 230
       Top = 10
-      Width = 257
+      Width = 330
       AutoSize = True
       BevelOuter = bvNone
       BorderStyle = bsSingle
@@ -243,7 +243,7 @@ object fmMain: TfmMain
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 2
       ClientHeight = 226
-      ClientWidth = 253
+      ClientWidth = 326
       ParentBackground = False
       TabOrder = 1
       OnMouseDown = FormMouseDown
@@ -266,7 +266,7 @@ object fmMain: TfmMain
         Left = 145
         Height = 28
         Top = 10
-        Width = 98
+        Width = 171
         Caption = 'Scale % [S]'
         Layout = tlCenter
         OnMouseDown = FormMouseDown
@@ -302,7 +302,7 @@ object fmMain: TfmMain
         Left = 145
         Height = 28
         Top = 48
-        Width = 98
+        Width = 171
         Caption = 'Test checkbox'
         Font.Style = [fsBold]
         Layout = tlCenter
@@ -325,7 +325,7 @@ object fmMain: TfmMain
         Left = 145
         Height = 28
         Top = 86
-        Width = 98
+        Width = 171
         Caption = 'Theme [S]'
         Layout = tlCenter
       end
@@ -343,10 +343,31 @@ object fmMain: TfmMain
         Left = 145
         Height = 30
         Top = 124
-        Width = 98
+        Width = 171
         Caption = 'Close app'
         TabOrder = 3
         OnClick = actionExecute
+      end
+      object seMenuRight: TSpinEdit
+        Left = 10
+        Height = 28
+        Hint = 'Hint example'
+        Top = 164
+        Width = 125
+        MaxValue = 3
+        OnChange = actionExecute
+        TabOrder = 5
+      end
+      object Label8: TLabel
+        Left = 145
+        Height = 28
+        Top = 164
+        Width = 171
+        Caption = 'Menu items right-justified'
+        Layout = tlCenter
+        OnMouseDown = FormMouseDown
+        OnMouseMove = FormMouseMove
+        OnMouseUp = FormMouseUp
       end
     end
   end
@@ -583,6 +604,7 @@ object fmMain: TfmMain
     end
   end
   object MainMenu1: TMainMenu
+    ParentBidiMode = False
     Images = ImageList1
     Left = 160
     Top = 368
