@@ -58,6 +58,7 @@
   v1.5.2  2025.04.01  Fix menu item width measuring
   v1.6    2025.04.05  Fix menu bar drawing
   v1.6.1  2025.04.08  Fix menu bar drawing again
+  v1.6.2  2025.04.11  Fix menu bar drawing again (old Win compatibility)
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -145,6 +146,7 @@ type
     procedure AutoConstraintsEnd;
     procedure ThemeApply;
 
+    function IsMenuItemFirst(AMenuItem: TMenuItem): Boolean;
     procedure MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
     procedure MenuMeasItem(Sender: TObject; ACanvas: TCanvas; var AWidth, AHeight: Integer);
 
@@ -598,6 +600,11 @@ procedure TFormTuned.ThemeApply;
     {$ENDIF}
   end;
 
+function TFormTuned.IsMenuItemFirst(AMenuItem: TMenuItem): Boolean;
+  begin
+    Result := AMenuItem.Handle = Form.Menu.Items[0].Handle;
+  end;
+
 procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
   //const
   //  subMark   = '❯';
@@ -664,6 +671,8 @@ procedure TFormTuned.MenuDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRec
       if item.RightJustify then
         FMenuBarCoordR := Min(FMenuBarCoordR, ARect.Left + 1) else
         FMenuBarCoordL := Max(FMenuBarCoordL, ARect.Right);
+
+      FMenuBarCoordR := Min(FMenuBarCoordR, ARect.Left + Form.Width + 1);
 
       ACanvas.Rectangle(
         FMenuBarCoordL, ARect.Top,
@@ -867,8 +876,7 @@ procedure TFormTuned.MenuMeasItem(Sender: TObject; ACanvas: TCanvas; var AWidth,
     if not item.IsInMenuBar then
       AWidth := Round(FScale / 100 * (AWidth + 4)) + 8
     else
-    if not Assigned(FMainMenu) or
-      ((FMainMenu.Items.Count > 0) and (item.Handle = FMainMenu.Items[0].Handle)) then
+    if IsMenuItemFirst(item) and (Form.Menu.Items.Count > 0) then
       begin
       // reset menu bar coordinates
       FMenuBarCoordL := 0;
