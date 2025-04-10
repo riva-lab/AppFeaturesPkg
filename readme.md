@@ -10,10 +10,10 @@ Package gets together several completely mutually independent units:
 
 - **AppLocalizer**. Class `TAppLocalizer` for smoothly localization for the application.
 
-Notes:
-
-1. > Package was tested on **Lazarus 3.0 FPC 3.2.2**.
-2. > Package was tested only on **Windows 10**.
+> Notes:
+> 
+> 1. Package was tested on **Lazarus 3.0 FPC 3.2.2**.
+> 2. Package was tested only on **Windows 10**.
 
 ## Features of units
 
@@ -102,4 +102,4 @@ The package depends on:
 
 ## License
 
-Package releases under [MIT License](license.txt). Copyright (c) 2024 Riva.
+Package releases under [MIT License](license.txt). Copyright (c) 2024-2025 Riva.
