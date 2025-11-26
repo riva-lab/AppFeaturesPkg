@@ -1,5 +1,5 @@
 
-{ AppSettings.pas                                  |  (c) 2024 Riva   |  v1.2  |
+{ AppSettings.pas                             |  (c) 2024-2025 Riva   |  v1.3  |
   ------------------------------------------------------------------------------
   Class `TAppSettings` for easy work with settings.
   It allows exchange between class property and variable by pointer.
@@ -41,13 +41,13 @@
   Используется для упрощения работы с массивом настроек.
   Также сохраняет настройки в заданный ini-файл.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.04.17
+  (c) Riva, 2024.04.17 - 2025.11.26
   https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
   ==============================================================================
 
   MIT License
   ------------------------------------------------------------------------------
-  Copyright (c) 2024 Riva
+  Copyright (c) 2024-2025 Riva
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to
@@ -77,6 +77,7 @@
                       Add `Clear` method for settings reset
   v1.2    2024.04.17  Fix `TPairSplitter` saving/restoring
   v1.2.1  2024.04.18  Fix bug in `TMemo` saving/restoring
+  v1.3    2025.11.26  Add flag FText2B64 to enable strings saving in Base64
   -----------------------------------------------------------------------------}
 unit AppSettings;
 
@@ -100,6 +101,7 @@ type
     FValueDef:  String;
     FValueType: TAppSettingsType;
     FFS:        TFormatSettings;
+    FText2B64:  Boolean;
 
     procedure SetValueDef(AValue: String);
     procedure SetValueType(AValue: TAppSettingsType);
@@ -110,7 +112,7 @@ type
     ValuePtr:   Pointer;
     Multiplier: Integer;
 
-    constructor Create;
+    constructor Create(AText2Base64: Boolean = False);
     destructor Destroy; override;
 
     procedure SyncComponent;
@@ -132,6 +134,7 @@ type
     FItems:      array of TAppSettingsItem;
     FIniFile:    String;
     FClear:      Boolean;
+    FText2B64:   Boolean;
 
     procedure Reset;
     function Find(AComponent: TComponent): Integer;
@@ -148,8 +151,8 @@ type
     OnSyncComponents: TNotifyEvent;
     OnSyncValues:     TNotifyEvent;
 
-    constructor Create;
-    constructor Create(AIniFileName: String);
+    constructor Create(AText2Base64: Boolean = False);
+    constructor Create(AIniFileName: String; AText2Base64: Boolean = False);
     destructor Destroy; override;
 
     procedure Add(UID: String; AType: TAppSettingsType; AValuePtr: Pointer; ADefaultValue: String = '');
@@ -192,13 +195,14 @@ procedure TAppSettingsItem.SetValueType(AValue: TAppSettingsType);
     SetValueDef(FValueDef);
   end;
 
-constructor TAppSettingsItem.Create;
+constructor TAppSettingsItem.Create(AText2Base64: Boolean);
   begin
     Component  := nil;
     ValuePtr   := nil;
     Multiplier := 1;
     FValueDef  := '';
     FValueType := stString;
+    FText2B64  := AText2Base64;
 
     FFS := DefaultFormatSettings;
     FFS.DecimalSeparator := '.';
@@ -352,7 +356,10 @@ procedure TAppSettingsItem.Write(AStorage: TIniPropStorage);
           'TEdit', 'TLabeledEdit', 'TMaskEdit', 'TCheckGroup', 'TCheckListBox',
           'TEditButton', 'TFileNameEdit', 'TDirectoryEdit', 'TDateEdit',
           'TTimeEdit':
-            WriteString(_n, (PString(_p))^);
+            if FText2B64 then
+              WriteString(_n, EncodeStringBase64((PString(_p))^))
+            else
+              WriteString(_n, (PString(_p))^);
 
           'TMemo':
             WriteString(_n, EncodeStringBase64((PString(_p))^));
@@ -403,7 +410,14 @@ procedure TAppSettingsItem.Read(AStorage: TIniPropStorage);
           'TEdit', 'TLabeledEdit', 'TMaskEdit', 'TCheckGroup', 'TCheckListBox',
           'TEditButton', 'TFileNameEdit', 'TDirectoryEdit', 'TDateEdit',
           'TTimeEdit':
-            (PString(_p))^ := ReadString(_n, '');
+            if FText2B64 then
+              try
+              (PString(_p))^ := DecodeStringBase64(ReadString(_n, ''));
+              except
+              (PString(_p))^ := '';
+              end
+            else
+              (PString(_p))^ := ReadString(_n, '');
 
           'TMemo':
             (PString(_p))^ := DecodeStringBase64(ReadString(_n, ''));
@@ -477,7 +491,7 @@ procedure TAppSettings.Add(AComponent: TComponent; AValuePtr: Pointer;
     if lastIndex < 0 then
       begin
       SetLength(FItems, Length(FItems) + 1);
-      FItems[High(FItems)] := TAppSettingsItem.Create;
+      FItems[High(FItems)] := TAppSettingsItem.Create(FText2B64);
 
       with FItems[High(FItems)] do
         begin
@@ -497,7 +511,7 @@ procedure TAppSettings.SetIniFile(AValue: String);
     FIniStorage.IniFileName := FIniFile;
   end;
 
-constructor TAppSettings.Create;
+constructor TAppSettings.Create(AText2Base64: Boolean);
   begin
     Reset;
 
@@ -505,6 +519,7 @@ constructor TAppSettings.Create;
     FIniStorage := TIniPropStorage.Create(nil);
     FIniFile    := '';
     FClear      := False;
+    FText2B64   := AText2Base64;
 
     OnLoad           := nil;
     OnSave           := nil;
@@ -512,9 +527,9 @@ constructor TAppSettings.Create;
     OnSyncValues     := nil;
   end;
 
-constructor TAppSettings.Create(AIniFileName: String);
+constructor TAppSettings.Create(AIniFileName: String; AText2Base64: Boolean);
   begin
-    Create;
+    Create(AText2Base64);
     IniFile := AIniFileName;
   end;
 
