@@ -464,6 +464,7 @@ procedure TFormTuned.SetMenuTune(AValue: Boolean);
 procedure TFormTuned.SetMenuShow(AValue: Boolean);
   begin
     FMenuShow := AValue;
+    FBounds   := Form.BoundsRect; // backup windows position/size
 
     if FMenuShow then
       begin
@@ -477,6 +478,7 @@ procedure TFormTuned.SetMenuShow(AValue: Boolean);
       Form.Menu := FMenuNone; // disable menu by switching to empty menu
       end;
 
+    Form.BoundsRect := FBounds; // restore windows position/size
     ThemeApply;
   end;
 
