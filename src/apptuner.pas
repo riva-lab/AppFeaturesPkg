@@ -1,5 +1,5 @@
 
-{ AppTuner.pas                                |  (c) 2024-2025 Riva   |  v1.6  |
+{ AppTuner.pas                                |  (c) 2024-2026 Riva   |  v1.6  |
   ------------------------------------------------------------------------------
   Class `TAppTuner`. Unit also provides pre-created instance `appTunerEx`.
   `TAppTuner` is used to tune some GUI app options for better appearance.
@@ -18,13 +18,12 @@
   Note. For correct theme applying you must set `IniFile` property
   in the very beginning of app, before `Application.Initialize` method call.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024-2025
-  https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
+  https://riva-lab.gitlab.io        https://gitlab.com/riva-lab/AppFeaturesPkg
   ==============================================================================
 
   MIT License
   ------------------------------------------------------------------------------
-  Copyright (c) 2024-2025 Riva
+  Copyright (c) 2024-2026 Riva
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to
@@ -59,6 +58,7 @@
   v1.6    2025.04.05  Fix menu bar drawing
   v1.6.1  2025.04.08  Fix menu bar drawing again
   v1.6.2  2025.04.11  Fix menu bar drawing again (old Win compatibility)
+  v1.6.3  2026.06.20  Fix menu show/hide logic (prevent app freezing on Alt)
   -----------------------------------------------------------------------------}
 unit AppTuner;
 
@@ -128,6 +128,7 @@ type
     FMenuAddHeight: Integer;
     FMenuColors:    TMenuColors;
     FMainMenu:      TMainMenu;
+    FMenuNone:      TMainMenu;
 
     procedure SetScale(AValue: Integer);
     procedure SetBorderless(AValue: Boolean);
@@ -466,14 +467,14 @@ procedure TFormTuned.SetMenuShow(AValue: Boolean);
 
     if FMenuShow then
       begin
-      if not Assigned(Form.Menu) then
+      if Assigned(FMainMenu) then
         Form.Menu := FMainMenu;
       end
     else
-    if Assigned(Form.Menu) then
+    if Form.Menu <> FMenuNone then // prevent repetitive disabling
       begin
-      FMainMenu := Form.Menu;
-      Form.Menu := nil;
+      FMainMenu := Form.Menu; // backup main menu before disabling
+      Form.Menu := FMenuNone; // disable menu by switching to empty menu
       end;
 
     ThemeApply;
@@ -903,10 +904,12 @@ constructor TFormTuned.Create;
     FMenuTune      := False;
     FMenuShow      := False;
     FMainMenu      := nil;
+    FMenuNone      := TMainMenu.Create(nil);
   end;
 
 destructor TFormTuned.Destroy;
   begin
+    FreeAndNil(FMenuNone);
     inherited Destroy;
   end;
 
@@ -985,6 +988,8 @@ procedure TFormTuned.LoadPropertiesFromIni;
         Active           := True;
         IniSection       := 'AppTuner.' + Form.Name;
         Scale            := ReadInteger('Scale', 100);
+        MenuShow         := ReadBoolean('MenuShow', True);
+        MenuTune         := ReadBoolean('MenuTune', False);
         Borderless       := ReadBoolean('Borderless', False);
         FBounds.Left     := ReadInteger('Left', Form.Left);
         FBounds.Top      := ReadInteger('Top', Form.Top);
@@ -994,8 +999,6 @@ procedure TFormTuned.LoadPropertiesFromIni;
         Form.WindowState := TWindowState(ReadInteger('State', 0));
         StayOnTop        := ReadBoolean('OnTop', False);
         AllowDrag        := ReadBoolean('AllowDrag', False);
-        MenuShow         := ReadBoolean('MenuShow', True);
-        MenuTune         := ReadBoolean('MenuTune', False);
 
         // keep form visible if parameters are incorrect
         with Form do
@@ -1149,7 +1152,7 @@ procedure TAppTuner.LoadDarkThemeSupport(AIniFile: String);
   const
     CPreferredMode: array[TAppTheme] of TPreferredAppMode =
       (pamAllowDark, pamForceLight, pamForceDark);
-    {$EndIf}
+  {$EndIf}
   begin
     if AIniFile = '' then Exit;
     if darkModeInitDone then Exit;
@@ -1233,7 +1236,12 @@ constructor TAppTuner.Create;
   end;
 
 destructor TAppTuner.Destroy;
+  var
+    i: Integer;
   begin
+    if Length(FForms) > 0 then
+      for i := 0 to High(FForms) do
+        FreeAndNil(FForms[i]);
     inherited Destroy;
   end;
 
@@ -1319,5 +1327,8 @@ procedure TAppTuner.DoTuneComboboxes;
 
 initialization
   appTunerEx := TAppTuner.Create;
+
+finalization
+  FreeAndNil(appTunerEx);
 
 end.
