@@ -1,0 +1,22 @@
+@chcp 1251
+echo off
+
+set LAZBUILD=c:\lazarus\lazbuild.exe
+set PROJFILE=_AppSettings.lpi
+
+cd "..\src"
+rd /s /q "lib"
+
+setlocal enabledelayedexpansion
+for %%a in (32) do (
+    set PROJARC=x%%a
+    set BUILDMODE=!PROJARC!-Release
+
+    echo.
+    echo Building Lazarus project:
+    echo  - name: %PROJFILE%
+    echo  - mode: !BUILDMODE!
+    echo ------------------------
+
+    "%LAZBUILD%" --no-write-project --build-mode=!BUILDMODE! %PROJFILE%
+)
