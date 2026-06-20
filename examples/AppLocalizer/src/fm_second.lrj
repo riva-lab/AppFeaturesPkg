@@ -1,4 +1,4 @@
 {"version":1,"strings":[
-{"hash":43754644,"name":"tfmsecond.caption","sourcebytes":[102,109,83,101,99,111,110,100],"value":"fmSecond"},
-{"hash":127640420,"name":"tfmsecond.lbsecond.caption","sourcebytes":[108,98,83,101,99,111,110,100],"value":"lbSecond"}
+{"hash":71273709,"name":"tfmsecond.caption","sourcebytes":[83,101,99,111,110,100,32,102,111,114,109],"value":"Second form"},
+{"hash":191755356,"name":"tfmsecond.lbsecond.caption","sourcebytes":[83,101,99,111,110,100,32,102,111,114,109,32,108,97,98,101,108],"value":"Second form label"}
 ]}

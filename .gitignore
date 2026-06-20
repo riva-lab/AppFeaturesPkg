@@ -3,7 +3,7 @@ lib/
 **/bin/*.exe
 **/bin/*.ini
 **/bin/lang/AppLocalizer.*
-**/bin/lang/AppLocalizer-*32-*
+**/bin/lang/AppLocalizer-*64-*
 **/bin/lang/*Debug*
 
 # Lazarus compiler-generated binaries (safe to delete)

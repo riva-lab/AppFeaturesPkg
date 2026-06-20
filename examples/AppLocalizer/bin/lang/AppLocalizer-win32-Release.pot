@@ -34,11 +34,11 @@ msgid "line 4"
 msgstr ""
 
 #: tfmsecond.caption
-msgid "fmSecond"
+msgid "Second form"
 msgstr ""
 
 #: tfmsecond.lbsecond.caption
-msgid "lbSecond"
+msgid "Second form label"
 msgstr ""
 
 #: tform1.btnsecond.caption

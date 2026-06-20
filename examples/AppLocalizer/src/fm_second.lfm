@@ -3,16 +3,16 @@ object fmSecond: TfmSecond
   Height = 240
   Top = 487
   Width = 320
-  Caption = 'fmSecond'
+  Caption = 'Second form'
   ClientHeight = 240
   ClientWidth = 320
   DesignTimePPI = 120
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '4.4.0.0'
   object lbSecond: TLabel
     Left = 24
     Height = 20
     Top = 24
-    Width = 62
-    Caption = 'lbSecond'
+    Width = 122
+    Caption = 'Second form label'
   end
 end

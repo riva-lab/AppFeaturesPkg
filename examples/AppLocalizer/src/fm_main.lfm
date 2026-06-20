@@ -13,9 +13,9 @@ object Form1: TForm1
   ClientHeight = 405
   ClientWidth = 381
   DesignTimePPI = 120
+  LCLVersion = '4.4.0.0'
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '3.0.0.3'
   object PageControl1: TPageControl
     Left = 8
     Height = 311
