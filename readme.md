@@ -12,7 +12,7 @@ Package gets together several completely mutually independent units:
 
 > Notes:
 > 
-> 1. Package was tested on **Lazarus 3.0 FPC 3.2.2**.
+> 1. Package was tested on **Lazarus 4.4 FPC 3.2.2**.
 > 2. Package was tested only on **Windows 10**.
 
 ## Features of units
@@ -49,32 +49,33 @@ How to use **AppTuner** see example [_AppTuner.lpi](examples/AppTuner/src/_AppTu
 
 Unit implements class `TAppSettings` for easy work with settings. It allows exchange between class property and variable by pointer. Support of non-class values by string ID. Save to and load from INI file. Supports following classes and properties:
 
-| Class          | Sync property | Associated var type   |
-| -------------- | ------------- | --------------------- |
-| TSpinEdit      | Value         | Integer               |
-| TFloatSpinEdit | Value         | Double                |
-| TComboBox      | ItemIndex     | Integer               |
-| TListBox       | ItemIndex     | Integer               |
-| TRadioGroup    | ItemIndex     | Integer               |
-| TNotebook      | PageIndex     | Integer               |
-| TPageControl   | PageIndex     | Integer               |
-| TPairSplitter  | Position      | Integer (in promille) |
-| TTrackBar      | Position      | Integer               |
-| TCheckBox      | Checked       | Boolean               |
-| TRadioButton   | Checked       | Boolean               |
-| TAction        | Checked       | Boolean               |
-| TToggleBox     | Checked       | Boolean               |
-| TColorButton   | ButtonColor   | TColor                |
-| TEdit          | Text          | String                |
-| TLabeledEdit   | Text          | String                |
-| TMaskEdit      | Text          | String                |
-| TEditButton    | Text          | String                |
-| TFileNameEdit  | Text          | String                |
-| TDirectoryEdit | Text          | String                |
-| TDateEdit      | Text          | String                |
-| TTimeEdit      | Text          | String                |
-| TCheckGroup    | Checked[]     | String                |
-| TCheckListBox  | Checked[]     | String                |
+| Class          | Sync property   | Associated var type   |
+| -------------- | --------------- | --------------------- |
+| TSpinEdit      | Value           | Integer               |
+| TFloatSpinEdit | Value           | Double                |
+| TComboBox      | ItemIndex       | Integer               |
+| TListBox       | ItemIndex       | Integer               |
+| TRadioGroup    | ItemIndex       | Integer               |
+| TNotebook      | PageIndex       | Integer               |
+| TPageControl   | PageIndex       | Integer               |
+| TPairSplitter  | Position        | Integer (in promille) |
+| TTrackBar      | Position        | Integer               |
+| TCheckBox      | Checked         | Boolean               |
+| TRadioButton   | Checked         | Boolean               |
+| TAction        | Checked         | Boolean               |
+| TToggleBox     | Checked         | Boolean               |
+| TColorButton   | ButtonColor     | TColor                |
+| TEdit          | Text            | String                |
+| TLabeledEdit   | Text            | String                |
+| TMaskEdit      | Text            | String                |
+| TEditButton    | Text            | String                |
+| TFileNameEdit  | Text            | String                |
+| TDirectoryEdit | Text            | String                |
+| TDateEdit      | Text            | String                |
+| TTimeEdit      | Text            | String                |
+| TCheckGroup    | Checked[]       | String                |
+| TCheckListBox  | Checked[]       | String                |
+| TMemo          | Lines.CommaText | String                |
 
 How to use **AppSettings** see example [_AppSettings.lpi](examples/AppSettings/src/_AppSettings.lpi) in this [directory](examples/AppSettings/src/).
 
@@ -102,4 +103,4 @@ The package depends on:
 
 ## License
 
-Package releases under [MIT License](license.txt). Copyright (c) 2024-2025 Riva.
+Package releases under [MIT License](license.txt). Copyright (c) 2024-2026 Riva.

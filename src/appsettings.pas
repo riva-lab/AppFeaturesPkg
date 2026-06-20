@@ -3,8 +3,9 @@
   ------------------------------------------------------------------------------
   Class `TAppSettings` for easy work with settings.
   It allows exchange between class property and variable by pointer.
-  Support of non-class values by string ID.
-  Save to and load from INI file.
+  The main goal is to simplify bulk saving/loading GUI components key
+  properties. Simple type values are also supported by string ID.
+  Configuration can be saved to and loaded from INI file.
 
   Supports following classes and properties:
 
@@ -36,13 +37,8 @@
   TCheckListBox    Checked[]         String
   TMemo            Lines.CommaText   String
 
-  Класс для обмена значениями между
-  свойством компонента и переменной по указателю.
-  Используется для упрощения работы с массивом настроек.
-  Также сохраняет настройки в заданный ini-файл.
   ------------------------------------------------------------------------------
-  (c) Riva, 2024.04.17 - 2025.11.26
-  https://riva-lab.gitlab.io        https://gitlab.com/riva-lab
+  https://riva-lab.gitlab.io        https://gitlab.com/riva-lab/AppFeaturesPkg
   ==============================================================================
 
   MIT License
